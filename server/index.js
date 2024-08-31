@@ -15,7 +15,7 @@ app.use(cors());
 app.use(jsonParser);
 
 app.post('/signup', (req, res) => {
-  const filePath = path.join(__dirname, 'users.json');
+  const filePath = path.join(__dirname, 'database/users.json');
   const username = req.body.username;
   const password = req.body.password;
 
@@ -41,12 +41,12 @@ app.post('/signup', (req, res) => {
             "password": hash,
             "tasks": [],
             "coins": 0,
-            "badges": [],
+            "tags": [],
             "journal": []
         }
         users.database.push(newUser);
 
-        fs.writeFile(filePath, JSON.stringify(todos, null, 2), 'utf-8', (err, data) => {
+        fs.writeFile(filePath, JSON.stringify(users, null, 2), 'utf-8', (err, data) => {
             if(err) {
                 return res.status(400).json({msg: "Error writing the file"})
             }
@@ -58,7 +58,7 @@ app.post('/signup', (req, res) => {
 })
 
 app.post('/login', (req,res) => {
-    const filePath = path.join(__dirname, 'users.json');
+    const filePath = path.join(__dirname, 'databse/users.json');
     const username = req.body.username;
     const password = req.body.password;
     
@@ -87,6 +87,157 @@ app.post('/login', (req,res) => {
             return res.status(403).json({msg: "Invalid credentials"});
         }
     })
+})
+
+app.get('/my-space', auth, (req, res) => {
+    const filePath = path.join(__dirname, 'databse/users.json');
+    
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        if(err) {
+            return res.status(400).json({msg: "Error reading the file"});
+        }
+
+        const users = JSON.parse(data);
+        const userSpaceData = ( ({ username, tasks, journal }) => ({ username, tasks, journal }))(todos.database.filter((user) => user.username === localStorage.getItem("currenUser"))[0]); 
+        return res.status(200).json(userSpaceData);
+    })
+})
+
+app.post('/my-space', auth, (req, res) => {
+    const filePath = path.join(__dirname, 'database/users.json');
+    const task = req.body.task;
+    const journalEntry = req.body.entry;
+
+    if(!task && !journalEntry) {
+        return res.status(400).json({msg: "Enter element to add"});
+    }
+
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        if(err) {
+            return res.status(400).json({msg: "Error occured"});
+        }
+
+        const users = JSON.parse(data);
+        const currentUser = localStorage.getItem("currentUser");
+        let currentUserData = users.database.filter((user) => user.username === currentUser)[0]; 
+        
+        if(task) {
+            const newTask = {
+                id: currentUserData.tasks.length + 1,
+                task: task,
+                status: false,
+                favourite: false
+            } 
+
+            currentUserData.tasks.push(newTask);
+            
+        } else {
+            const newEntry = {
+                id: currentUserData.journal.length+1,
+                content: journalEntry,
+            }
+
+            currentUserData.journal.push(newEntry);
+        }
+
+        users.database.map((user) => 
+            user.username === currentUser ? currentUserData : user
+        )
+            
+        const updatedUsers = JSON.stringify(users, null, 2);
+
+        fs.writeFile(filePath, updatedUsers, 'utf-8', (err) => {
+            if(err) {
+                res.status(404).json({msg: "Error occured"});
+            } else {
+                res.status(200).json({client:{msg: "Todo added successfully!"}, users:updatedTodos});
+            }
+        })
+    })
+})
+
+app.get('/store', auth, (req, res) => {
+    const usersPath = path.join(__dirname, 'database/users.json');
+    const storePath = path.join(__dirname, 'database/store.json')
+    let coins;
+    let sectionData = [];
+    fs.readFile(storePath, 'utf-8', (err, data) => {
+        if(err) {
+            return res.status(400).json({msg: "Error reading the file"});
+        }
+
+        sectionData = JSON.parse(data);
+    })
+
+    fs.readFile(usersPath, 'utf-8', (err, data) => {
+        if(err) {
+            return res.status(400).json({msg: "Error reading this file"});
+        }
+
+        const users = JSON.parse(data);
+        const currentUser = localStorage.getItem("currentUser");
+        coins = users.database.filter((user) => (user.username === currentUser))[0].coins;
+    })
+
+    res.status(200).json({
+        tags: sectionData.tags,
+        avatars: sectionData.avatars,
+        coins: coins,
+    });
+})
+
+app.post('/store', auth, (req,res) => {
+    const usersPath = path.join(__dirname, 'database/users.json');
+    const storePath = path.join(__dirname, 'database/store.json');
+
+    let coins;
+    const tag = req.body.tag;
+    const avatar = req.body.avatar;
+
+    if(!tag && !avatar) {
+        res.status(400).json({msg: "Enter entity to buy"})
+    }
+
+    fs.readFile(usersPath, 'utf-8', (err, data) => {
+        if(err) {
+            res.status(400).json({msg: "Error reading the file"});
+        }
+
+        const users = JSON.parse(data);
+        const currentUser = localStorage.getItem("currentUser");
+        const currentUserData = users.database.filter((user) => (user.username === currentUser))[0];
+        const coins = currentUserData.coins; 
+
+        if(tag) {
+            if(coins < tag.cost) {
+                res.status(400).json({msg: "You dont have enough zens"});
+            } 
+
+            currentUserData.coins -= tag.cost;
+            currentUserData.tags.push(tags.content);
+        } else {
+            if(coins < avatar.cost) {
+                res.status(400).json({msg: "You dont have enough zens"});
+            }
+
+            currentUserData.coins -= avatar.cost;
+            currentUserData.avatars.push(avatar.content);
+        }
+
+        users.database.map((user) => 
+            user.username === currentUser ? currentUserData : user
+        )
+
+        const updatedUsers = JSON.stringify(users, null, 2);
+
+        fs.writeFile(usersPath, updatedUsers, 'utf-8', (err, data) => {
+            if(err) {
+                res.status(400).json({msg: "Error writing to file"});
+            }
+        })
+    })
+
+
 })
 
 app.listen(PORT, () => {
