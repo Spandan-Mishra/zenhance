@@ -39,6 +39,7 @@ app.post('/signup', (req, res) => {
             "username": username,
             "id": todos.database.length+1,
             "password": hash,
+            "points": 0,
             "tasks": [],
             "coins": 0,
             "tags": [],
@@ -98,7 +99,7 @@ app.get('/my-space', auth, (req, res) => {
         }
 
         const users = JSON.parse(data);
-        const userSpaceData = ( ({ username, tasks, journal }) => ({ username, tasks, journal }))(todos.database.filter((user) => user.username === localStorage.getItem("currenUser"))[0]); 
+        const userSpaceData = ( ({ username, tasks, journal }) => ({ username, tasks, journal }))(users.database.filter((user) => user.username === localStorage.getItem("currenUser"))[0]); 
         return res.status(200).json(userSpaceData);
     })
 })
@@ -237,6 +238,19 @@ app.post('/store', auth, (req,res) => {
         })
     })
 
+app.get('/profile', auth, (req, res) => {
+   const filePath = path.join(__dirname, 'database/users.json'); 
+
+   fs.readFile(filePath, 'utf-8', (err, data) => {
+        if(err) {
+            res.status(400).json({msg: "Error in reading file"})
+        }
+
+        const users = JSON.parse(data);
+        const userProfileData = ( ({ username, coins, points, tags }) => ({ username, coins, points, tags }))(todos.database.filter((user) => user.username === localStorage.getItem("currenUser"))[0]); 
+        res.status(200).json(userProfileData);
+   })
+})
 
 })
 
