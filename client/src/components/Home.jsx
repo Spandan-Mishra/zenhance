@@ -1,52 +1,35 @@
-import image from '../assets/meditation.jpg'
-import image2 from '../assets/yoga.jpg'
+import work from '../assets/work.jpg'
 const Home = () => {
     return (
         <>
-            <div className="top_main_container_curved">
-                <h1>
-                    Zenhance
-                </h1>
-
-                <p>
-                    Small deeds done are better than great deeds planned. <br />
-                    <span>-Peter Marshall</span>
-                </p>
+            <div className="main_heading">
+                Managing Your Tasks <br />
+                And Productivity <br />
+                Becomes Easier.
             </div>
 
-            <h2 id="featuer_name">
-                Features
-            </h2>
-
-            <div className="feature_div">
-                <div className="medition_div">
-                    <img src={image} alt="image" id='image_meditation'/>
-                    <h2>Meditation</h2>
-                    <p>You have power over your mind</p>
-                </div>
-                <div className="yoga_div">
-                    <img src={image2} alt="yoga_Image" id='image_meditation'/>
-                    <h2></h2>
-                    <p></p>
-                </div>
-                <div className="journalism_div">
-                    <h2></h2>
-                    <p></p>
-                </div>
+            <div className="below_heading">
+                Effortlessly organize , priotrize and track your tasks,helping you <br />
+                achieve new heights in productivity and sucess. Join us on a <br />
+                journew to conquer you to-do list.
             </div>
+
+            <div className="change_colour">
+                Get ready to work CREATIVE...
+            </div>
+            <div className="main_inside_container">
+                <img src={work} alt="image" />
+            </div>
+            <div className="top_single_div">
+                <span>350%</span> <br />
+                <p>Average anual growth rate</p>
+            </div>
+            <div className="bottom_left_div">
+                <span>95%</span> <br />
+                <p>Increase in efficiency</p>
+            </div>
+            {/* <div className="bottom_right_div"></div> */}
             
-            
-
-            <div className="about_section">
-                <h1>About Us</h1>
-                <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem aliquam laboriosam reiciendis quis nam velit possimus tempore dicta officiis perferendis! Aut sed non ipsam explicabo, blanditiis nesciunt alias neque laudantium?
-                </p>
-            </div>
-
-            <button className="button">
-                Get Started
-            </button>
         </>
     )
 }

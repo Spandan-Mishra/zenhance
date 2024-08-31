@@ -1,101 +1,113 @@
-.top_main_container_curved{
-    width: 100%;
-    height: 20rem;
-    background-color: #0d366d;
-    border-bottom-left-radius: 58%;
-    border-bottom-right-radius: 58%;
-
-}
-
-.top_main_container_curved h1 {
+.main_heading{
     position: absolute;
-    background-color: #0d366d;
-    font-size: 5rem;
-    left: 38rem;
-    top: 10rem;
-    color: #e3ede2;
-    font-weight: lighter;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
-.top_main_container_curved p{
-    position: absolute;
-    background-color: #0d366d;
-    font-size: 1.5rem;
-    left: 31.5rem;
-    top: 20rem;
-    color: #e3ede2;
-}
-
-.top_main_container_curved p span{
-    position: absolute;
-    background-color: #0d366d;
-    left: 11.5rem;
-    /* font-size: 1.15; */
-}
-
-
-#featuer_name{
-    position: absolute;
-    font-size: 2.5rem;
+    top: 12rem;
+    left: 8rem;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    left: 45%;
-    top: 31rem;
+    font-size: 3.5rem;
 }
 
-.feature_div{
-    width: 99.9%;
-    height: 20rem;
-    /* border: 1px solid black; */
+.below_heading{
     position: absolute;
-    top: 38rem;
+    top: 25rem;
+    left: 8rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 1.5rem;
+}
+
+.change_colour{
+    position: absolute;
+    left: 8rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 1.5rem;
+    top: 35rem;
+    background-color: yellow;
+    padding: 1rem;
+    border-radius: 2rem;
+}
+
+/* .top_single_div{
+    position: absolute;
+    border: 1px solid black;
+    width: 25rem;
+    height: 13rem;
+    left: 58rem;
+    top: 10rem;
+    transform: rotate(150deg);
+} */
+
+.main_inside_container{
+    position: absolute;
+    left: 60rem;
+    top: 7rem;
+    /* border: 1px solid black; */
+    height: 13rem;
+    width: 28rem;
+}
+
+.top_single_div{
+    position: absolute;
+    width: 13.5rem;
+    height: 16rem;
+    border: 1px solid black;
+    top: 27rem;
+    left: 60rem;
+    border-radius: 2.5rem;
+    background-color: rgb(207, 207, 207);
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.top_single_div p{
+    position: absolute;
+    background-color: rgb(207, 207, 207);
+    left: 2rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.top_single_div span{
+    position: relative;
+    left: .7rem;
+    top: -3rem;
+    font-size: 2rem;
+    background-color: rgb(207, 207, 207);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    /* font-weight: bold; */
+}
+
+.bottom_left_div{
+    position: absolute;
+    width: 13.5rem;
+    height: 16rem;
+    border: 1px solid black;
+    top: 27rem;
+    left: 74.5rem;
+    border-radius: 2.5rem;
+    background-color: rgb(158, 233, 158);
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.feature_div div{
-    width: 15rem;
-    height: 17rem;
-    border: 1px solid black;
-}
-
-.about_section{
+.bottom_left_div p{
     position: absolute;
-    top: 65rem;
-    left: 1rem;
-    font-size: 1.5rem;
-}
-
-.about_section h1{
-    position: absolute;
+    background-color: rgb(158, 233, 158);
+    left: 2rem;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    left: 45%;
-    font-size: 2.5rem;
+}
+
+.bottom_left_div span{
+    position: relative;
+    left: .8rem;
     top: -3rem;
-    margin-bottom: 1rem;
+    font-size: 2rem;
+    background-color: rgb(158, 233, 158);
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    /* font-weight: bold; */
 }
 
-.button{
-    position: absolute;
-    top: 70rem;
-    left: 46.5%;
-    font-size: 1.5em;
-    font-weight: bold;
-    padding: 2px 4px;
-    margin-bottom: 4rem;
-}
-
-.medition_div{
-    display: flex;
-    align-items:center;
-    justify-content: flex-end;
-    flex-direction: column;
-}
-
-#image_meditation{
-    width: 15rem;
-    position: absolute;
-    top: 2rem;
-    border-radius: 2rem;
+.main_inside_container img{
+    width: 28rem;
+    border-radius: 2.5rem;
 }

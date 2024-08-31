@@ -4,7 +4,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import MySpace from "./components/MySpace";
-import Store from "./components/store";
+// import Store from "./components/store";
 import './App.css'
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/my-space" element={<MySpace />} />
-        <Route path="/store" element={<Store />} />
+        {/* <Route path="/store" element={<Store />} /> */}
       </Routes>
     </BrowserRouter>
   )

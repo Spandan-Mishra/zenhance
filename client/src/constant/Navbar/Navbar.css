@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,4 +41,52 @@ a {
     font-size: 1.5rem;
     top: 1.5rem;
     left: 47rem;
+} */
+
+.navbar{
+    /* border: 1px solid black; */
+    width: 100%;
+    height: 5rem;
+    display: flex;
+
+}
+
+.navbar a{
+    /* position: absolute; */
+    position: relative;
+    margin-left: 2rem;
+    text-decoration: none;
+    left: 52rem;
+    top: 1.5rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: larger;
+    font-weight: bold;
+    color: black;
+    
+}
+
+.navbar button{
+    position: absolute;
+    left: 82rem;
+    top: 0.8rem;
+    font-size: 1.5rem;
+    background-color: black;
+    color: white;
+    border-radius: 1rem;
+    /* padding-left: 1rem;
+    padding-right: 1rem; */
+    padding: 0.3rem 0.8rem;
+}
+
+.navbar button span{
+    background-color: black;
+    color: white;
+}
+
+#web_name{
+    position: absolute;
+    left: 3rem;
+    top: 0.9rem;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+
 }
