@@ -1,19 +1,66 @@
-const Home = () => {
-    return (
-        <>
-           <div className="login-container">
-                <h2>Login</h2>
-                <form action="/submit-login" method="post">
-                    <label htmlFor="username">Username:</label>
-                    <input type="text" id="username" name="username" required />
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" id="password" name="password" required />
+import { useState } from "react";
 
-                    <button type="submit">Login</button>
-                </form>
-           </div>
-        </>
+const Login = () => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [college, setCollege] = useState("");
+
+    return (
+        <div className="box">
+            <h1>Login</h1>
+            <div className="form">
+                <input 
+                    type="text" 
+                    placeholder="Enter username" 
+                    name="username" 
+                    onChange={(e) => {setUsername(e.target.value)}} 
+                />    
+                <input 
+                    type="text" 
+                    placeholder="Enter password" 
+                    name="password" 
+                    onChange={(e) => {setPassword(e.target.value)}} 
+                />
+                <select
+                    onChange={(e) => {setCollege(e.target.value)}}
+                >
+                    <option value="college" disabled selected>Select college</option>
+                    <option value="college1">NITR</option>
+                    <option value="college2">IITB</option>
+                    <option value="college3">NITK</option>
+                </select>
+                <button 
+                    type="submit"
+                    id="submit"
+                    onClick={async () => {
+                        const response = await fetch('http://localhost:3000/login', {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                username: username,
+                                password: password,
+                                college: college
+                            }),
+                        });
+                        
+                        const json = await response.json();
+                        if(response.ok) {
+                            console.log(json.client);
+                            localStorage.setItem("token", json.token);
+                        } else {
+                            console.log(json);
+                        }
+                        
+                    }}
+                >
+                    Login
+                </button>
+            </div>
+        </div>
+        
     )
 }
 
-export default Home;
+export default Login;
