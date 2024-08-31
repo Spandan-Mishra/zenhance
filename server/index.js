@@ -18,9 +18,10 @@ app.post('/signup', (req, res) => {
   const filePath = path.join(__dirname, 'database/users.json');
   const username = req.body.username;
   const password = req.body.password;
+  const college = req.body.college;
 
-  if(!username || !password) {
-    return res.status(400).json({msg: "Enter username and password"});
+  if(!username || !password || !college) {
+    return res.status(400).json({msg: "Fill all fields"});
   }
 
   fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -29,21 +30,19 @@ app.post('/signup', (req, res) => {
     }
 
     const users = JSON.parse(data);
-    
-    if(users.database.some((user) => user.username === username)) {
+
+    if(users.database.some((user) => user.username === username && user.college)) {
         return res.status(403).json({msg: "User already exists"});
     } else {
         var hash = sha256(password)
 
         const newUser = {
             "username": username,
-            "id": todos.database.length+1,
+            "id": users.database.length+1,
             "password": hash,
-            "points": 0,
-            "tasks": [],
+            "college": college,
             "coins": 0,
-            "tags": [],
-            "journal": []
+            "posts": []
         }
         users.database.push(newUser);
 
@@ -62,9 +61,10 @@ app.post('/login', (req,res) => {
     const filePath = path.join(__dirname, 'databse/users.json');
     const username = req.body.username;
     const password = req.body.password;
+    const college = req.body.college;
     
-    if(!username || !password) {
-        return res.status(400).json({msg: "Enter username and password"});
+    if(!username || !password || !college) {
+        return res.status(400).json({msg: "Fill all fields"});
     }
 
     fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -75,8 +75,9 @@ app.post('/login', (req,res) => {
         const users = JSON.parse(data);
         var hash = sha256(password)
 
-        if(users.database.some((user) => user.username === username && user.password === hash)) {
+        if(users.database.some((user) => user.username === username && user.password === hash && user.college === college)) {
             localStorage.setItem("currentUser", username);
+            localStorage.setItem("college", college);
             const token = jwt.sign({
                 id: users.database.filter((user) => user.username === username)[0].id
             }, JWT_SECRET);
@@ -99,17 +100,16 @@ app.get('/my-space', auth, (req, res) => {
         }
 
         const users = JSON.parse(data);
-        const userSpaceData = ( ({ username, tasks, journal }) => ({ username, tasks, journal }))(users.database.filter((user) => user.username === localStorage.getItem("currenUser"))[0]); 
-        return res.status(200).json(userSpaceData);
+        const collegePosts = users.database.filter((user) => (user.college === college)).map(({ username, posts }) => ({ username, posts }));
+        return res.status(200).json(collegePosts);
     })
 })
 
 app.post('/my-space', auth, (req, res) => {
     const filePath = path.join(__dirname, 'database/users.json');
-    const task = req.body.task;
-    const journalEntry = req.body.entry;
+    const post = req.body.post;
 
-    if(!task && !journalEntry) {
+    if(!post) {
         return res.status(400).json({msg: "Enter element to add"});
     }
 
@@ -122,136 +122,58 @@ app.post('/my-space', auth, (req, res) => {
         const currentUser = localStorage.getItem("currentUser");
         let currentUserData = users.database.filter((user) => user.username === currentUser)[0]; 
         
-        if(task) {
-            const newTask = {
-                id: currentUserData.tasks.length + 1,
-                task: task,
-                status: false,
-                favourite: false
-            } 
-
-            currentUserData.tasks.push(newTask);
-            
-        } else {
-            const newEntry = {
-                id: currentUserData.journal.length+1,
-                content: journalEntry,
-            }
-
-            currentUserData.journal.push(newEntry);
+        const newPost = {
+            id: currentUserData.posts.length+1,
+            content: post,
+            interactors: []
         }
+
+        currentUserData.posts.push(newPost);
 
         users.database.map((user) => 
             user.username === currentUser ? currentUserData : user
-        )
-            
-        const updatedUsers = JSON.stringify(users, null, 2);
+        );
 
-        fs.writeFile(filePath, updatedUsers, 'utf-8', (err) => {
+        fs.writeFile(filePath, JSON.stringify(users, null, 2), 'utf-8', (err, data) => {
             if(err) {
-                res.status(404).json({msg: "Error occured"});
-            } else {
-                res.status(200).json({client:{msg: "Todo added successfully!"}, users:updatedTodos});
+                res.status(400).json({msg: "Error writing"});
             }
         })
+
+        res.status(200).json({msg: "Post added successfully"});
     })
 })
 
-app.get('/store', auth, (req, res) => {
-    const usersPath = path.join(__dirname, 'database/users.json');
-    const storePath = path.join(__dirname, 'database/store.json')
-    let coins;
-    let sectionData = [];
-    fs.readFile(storePath, 'utf-8', (err, data) => {
-        if(err) {
-            return res.status(400).json({msg: "Error reading the file"});
-        }
+app.put('/my-space', auth, (req, res) => {
+    const filePath = path.join(__dirname, 'database/users.json');
+    const username = req.body.username;
+    const postId = req.body.id;
 
-        sectionData = JSON.parse(data);
-    })
-
-    fs.readFile(usersPath, 'utf-8', (err, data) => {
+    fs.readFile(filePath, 'utf-8', (req, res) => {
         if(err) {
-            return res.status(400).json({msg: "Error reading this file"});
+            res.status(400).json({msg: "Error in reading file"});
         }
 
         const users = JSON.parse(data);
         const currentUser = localStorage.getItem("currentUser");
-        coins = users.database.filter((user) => (user.username === currentUser))[0].coins;
-    })
+        const postUserData = users.database.filter((user) => (user.username === username))[0];
 
-    res.status(200).json({
-        tags: sectionData.tags,
-        avatars: sectionData.avatars,
-        coins: coins,
-    });
-})
-
-app.post('/store', auth, (req,res) => {
-    const usersPath = path.join(__dirname, 'database/users.json');
-    const storePath = path.join(__dirname, 'database/store.json');
-
-    let coins;
-    const tag = req.body.tag;
-    const avatar = req.body.avatar;
-
-    if(!tag && !avatar) {
-        res.status(400).json({msg: "Enter entity to buy"})
-    }
-
-    fs.readFile(usersPath, 'utf-8', (err, data) => {
-        if(err) {
-            res.status(400).json({msg: "Error reading the file"});
-        }
-
-        const users = JSON.parse(data);
-        const currentUser = localStorage.getItem("currentUser");
-        const currentUserData = users.database.filter((user) => (user.username === currentUser))[0];
-        const coins = currentUserData.coins; 
-
-        if(tag) {
-            if(coins < tag.cost) {
-                res.status(400).json({msg: "You dont have enough zens"});
-            } 
-
-            currentUserData.coins -= tag.cost;
-            currentUserData.tags.push(tags.content);
-        } else {
-            if(coins < avatar.cost) {
-                res.status(400).json({msg: "You dont have enough zens"});
-            }
-
-            currentUserData.coins -= avatar.cost;
-            currentUserData.avatars.push(avatar.content);
-        }
-
-        users.database.map((user) => 
-            user.username === currentUser ? currentUserData : user
+        postUserData.map((post) => 
+            post.id === postId ? [...post, interactors.push(username)] : post
         )
 
-        const updatedUsers = JSON.stringify(users, null, 2);
+        users.database.map((user) =>
+            user.username === username ? postUserData : user
+        )
 
-        fs.writeFile(usersPath, updatedUsers, 'utf-8', (err, data) => {
+        fs.writeFile(filePath, JSON.stringify(users, null, 2), 'utf-8', (err, data) => {
             if(err) {
-                res.status(400).json({msg: "Error writing to file"});
+                res.status(400).json({msg: "Error in writing"});
             }
         })
+
+        res.status(200).json({msg: "Interactor added"});
     })
-
-app.get('/profile', auth, (req, res) => {
-   const filePath = path.join(__dirname, 'database/users.json'); 
-
-   fs.readFile(filePath, 'utf-8', (err, data) => {
-        if(err) {
-            res.status(400).json({msg: "Error in reading file"})
-        }
-
-        const users = JSON.parse(data);
-        const userProfileData = ( ({ username, coins, points, tags }) => ({ username, coins, points, tags }))(todos.database.filter((user) => user.username === localStorage.getItem("currenUser"))[0]); 
-        res.status(200).json(userProfileData);
-   })
-})
-
 })
 
 app.listen(PORT, () => {
