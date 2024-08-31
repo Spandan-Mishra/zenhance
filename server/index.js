@@ -176,6 +176,21 @@ app.put('/my-space', auth, (req, res) => {
     })
 })
 
+app.get('/profile', auth, (req, res) => {
+    const filePath = path.join(__dirname, 'database/users.json');
+    const currentUser = localStorage.getItem("currentUser");
+
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        if(err) {
+            res.status(400).json({msg: "Error in reading file"});
+        }
+
+        const users = JSON.parse(data);
+        const currentUserData = users.database.filter((user) => user.username === currentUser)[0];
+        res.status(200).json(currentUserData);
+    });
+})
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
