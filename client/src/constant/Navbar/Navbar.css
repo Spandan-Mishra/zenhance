@@ -1,0 +1,44 @@
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #0d366d;
+    padding: 10px 0px;
+    text-decoration: none;
+    height: 3.5rem;
+}
+
+.navbar > * {
+    margin-right: 2rem;
+    text-decoration: none; 
+}
+
+a {
+    
+    color: #fcce90;
+    background-color: #0d366d;
+    text-decoration: none;
+}
+
+#home_id{
+    position: absolute;
+    left: 2.5rem;
+    top: 1.5rem;
+    text-decoration: none;
+    font-size: 1.5rem;
+    
+}
+
+#store_id{
+    position: absolute;
+    font-size: 1.5rem;
+    top: 1.5rem;
+    left: 42rem;
+}
+
+#space_id{
+    position: absolute;
+    font-size: 1.5rem;
+    top: 1.5rem;
+    left: 47rem;
+}
