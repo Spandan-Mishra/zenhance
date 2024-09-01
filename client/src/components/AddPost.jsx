@@ -43,12 +43,12 @@ const AddPost = ({ onAddPost }) => {
             <div className="form">
                 <input 
                     type="text" 
-                    placeholder="Enter task to add"
+                    placeholder="Submit a post"
                     value={post}
                     onChange={(e) => {
                         setPost(e.target.value)
                         }}/>
-                <button type="submit">Add!</button> 
+                <button type="submit">Post!</button> 
             </div> 
 
         </form>

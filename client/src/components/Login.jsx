@@ -55,7 +55,7 @@ const Login = () => {
                         } else {
                             console.log(json);
                         }
-                        
+                        localStorage.setItem("username", username);
                     }}
                 >
                     Login

@@ -23,9 +23,10 @@
       "posts": [
         {
           "id": 1,
-          "content": "complete assignmen",
+          "content": "complete assignment",
           "interactors": [
-            "spandy"
+            "spandy",
+            ""
           ]
         }
       ]
