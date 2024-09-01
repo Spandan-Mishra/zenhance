@@ -2,41 +2,34 @@ import "./Navbar.css";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+    const token = localStorage.getItem("token");
+
     return (
         <>
             <div className="navbar">
                 <h1 id="web_name">
                     Zenhance
                 </h1>
-                <div className="home">
-                    <Link to={"/home"}>Home</Link>
+                <div >
+                    <Link to={"/my-space"}>My Space</Link>
+                </div>
+                <div>
+                    <Link to={"/"}>About Us</Link>
+                </div>
+                <div>
+                    <Link to={"/"}>Contact Us</Link>
                 </div>
 
-                <div className="aboutus">
-                    <Link to={"/aboutus"}>About Us</Link>
-                </div>
-
-                <div className="services">
-                    <Link to={"/services"}>Services</Link>
-                </div>
-
-                <div className="contact">
-                    <Link to={"/contact"}>Contact</Link>
-                </div>
-
+                
                 <button>
-                    Get Started <span id="arrow">➜</span>
+                    {token ? (
+                        <Link to={"/profile"}>Profile</Link>
+                    ) : (
+                        <Link to={"/signup"}>Signup</Link>
+                    )}
                 </button>
             </div>
         </>
-        // <div className='navbar'>
-        //     <div id='home_id'>
-        //         <Link to={"/"} id='photu'>Home</Link>
-        //     </div>
-        //     <div id='space_id'>
-        //         <Link to={"/my-space"} >My Space</Link>
-        //     </div> 
-        // </div>
     )
 }
 export default Navbar;

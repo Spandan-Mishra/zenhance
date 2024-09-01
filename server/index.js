@@ -54,7 +54,7 @@ app.post('/signup', (req, res) => {
             }
         })
 
-        return res.status(200).json({msg: "User registered successfully!"});
+        return res.status(200).json({msg: "User registered successfully!", redirect: "/login" });
     }
   })
 })
@@ -86,7 +86,7 @@ app.post('/login', (req,res) => {
 
             return res.status(200).json({ 
                 token, 
-                client:{msg:"User logged in successfully!"} });
+                client:{msg:"User logged in successfully!", redirect: "/my-space"} });
         } else {
             return res.status(403).json({msg: "Invalid credentials"});
         }

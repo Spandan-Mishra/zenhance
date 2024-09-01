@@ -51,6 +51,7 @@ const Signup = () => {
                         const json = await response.json();
                         console.log(json);
                         
+                        window.location.href = json.redirect;
                     }}
                 >
                     Signup

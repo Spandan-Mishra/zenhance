@@ -52,6 +52,7 @@ const Login = () => {
                         if(response.ok) {
                             console.log(json.client);
                             localStorage.setItem("token", json.token);
+                            window.location.href = json.client.redirect;
                         } else {
                             console.log(json);
                         }
