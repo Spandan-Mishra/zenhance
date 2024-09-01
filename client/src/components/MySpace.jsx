@@ -52,13 +52,51 @@ const MySpace = () => {
                                     <div key={`${userIndex}-${postIndex}`}>
                                         <h2>{user.username}</h2>
                                         <h3>{post.content}</h3>
+                                        {user.username !== localStorage.getItem("username") ? <button
+                                            onClick={async () => {
+                                                const token = localStorage.getItem("token");
+                                                if(!token) {
+                                                    console.log("Login required!");
+                                                    return ;
+                                                }
+                                                try {
+                                                    const response = await fetch('http://localhost:3000/my-space', {
+                                                        method: "PUT",
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'Authorization': token
+                                                        },
+                                                        body: JSON.stringify({
+                                                            username: user.username,
+                                                            id: post.id
+                                                        })
+                                                    });
+
+                                                    if(!response.ok) {
+                                                        console.log("Authorization failed");
+                                                        return ;
+                                                    }
+
+                                                    fetchData();
+                                                    const json = await response.json();
+                                                    console.log(json);
+                                                } catch(error) {
+                                                    console.log(error.message);
+                                                }
+
+                                            }}
+                                        >
+                                            Collaborate!
+                                        </button>
+                                        : null    
+                                    }
                                     </div>
                                 ))
                             ))}
                             
                         </div>
                     ) : (
-                        <h2>Add Tasks!</h2>
+                        <h2>Add a post</h2>
                     )}   
                     <AddPost onAddPost={fetchData} />
                 </>
