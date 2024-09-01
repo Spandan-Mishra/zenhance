@@ -9,7 +9,22 @@
       "posts": [
         {
           "id": 1,
-          "content": "gand mara",
+          "content": "Home Work",
+          "interactors": []
+        },
+        {
+          "id": 2,
+          "content": "Maths Assignment",
+          "interactors": []
+        },
+        {
+          "id": 3,
+          "content": "Class work",
+          "interactors": []
+        },
+        {
+          "id": 4,
+          "content": "DSA Assignment",
           "interactors": []
         }
       ]

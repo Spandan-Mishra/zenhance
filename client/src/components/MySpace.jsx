@@ -50,9 +50,10 @@ const MySpace = () => {
                             {postDatas.map((user, userIndex) => (
                                 user.posts.map((post, postIndex) => (
                                     <div key={`${userIndex}-${postIndex}`} className="task_div">
-                                        <h2>{user.username}</h2>
+                                        <h2>{user.username} :</h2>
                                         <h3>{post.content}</h3>
-                                        {user.username !== localStorage.getItem("username") ? <button
+                                        {user.username !== localStorage.getItem("username") ? 
+                                        <button
                                             onClick={async () => {
                                                 const token = localStorage.getItem("token");
                                                 if(!token) {
@@ -86,7 +87,7 @@ const MySpace = () => {
 
                                             }}
                                         >
-                                            Collaborate!
+                                            Collaborate
                                         </button>
                                         : null    
                                     }
