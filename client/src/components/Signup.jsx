@@ -14,12 +14,14 @@ const Signup = () => {
                     placeholder="Enter username" 
                     name="username" 
                     onChange={(e) => {setUsername(e.target.value)}} 
+                    id="input1"
                 />    
                 <input 
                     type="text" 
                     placeholder="Enter password" 
                     name="password" 
                     onChange={(e) => {setPassword(e.target.value)}} 
+                    id="input2"
                 />
                 <select
                     onChange={(e) => {setCollege(e.target.value)}}
