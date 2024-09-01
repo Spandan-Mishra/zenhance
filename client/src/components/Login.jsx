@@ -23,11 +23,12 @@ const Login = () => {
                 />
                 <select
                     onChange={(e) => {setCollege(e.target.value)}}
+                    defaultValue={"college"}
                 >
-                    <option value="college" disabled selected>Select college</option>
-                    <option value="college1">NITR</option>
-                    <option value="college2">IITB</option>
-                    <option value="college3">NITK</option>
+                    <option value="college" disabled >Select college</option>
+                    <option value="NITR">NITR</option>
+                    <option value="IITB">IITB</option>
+                    <option value="NITK">NITK</option>
                 </select>
                 <button 
                     type="submit"

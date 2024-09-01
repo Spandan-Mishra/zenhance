@@ -13,9 +13,11 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 const cors = require("cors");
 app.use(cors());
 app.use(jsonParser);
+let currentUser = "";
+let currentCollege = "";
 
 app.post('/signup', (req, res) => {
-  const filePath = path.join(__dirname, 'database/users.json');
+  const filePath = path.join(__dirname, 'users.json');
   const username = req.body.username;
   const password = req.body.password;
   const college = req.body.college;
@@ -58,7 +60,7 @@ app.post('/signup', (req, res) => {
 })
 
 app.post('/login', (req,res) => {
-    const filePath = path.join(__dirname, 'databse/users.json');
+    const filePath = path.join(__dirname, 'users.json');
     const username = req.body.username;
     const password = req.body.password;
     const college = req.body.college;
@@ -76,8 +78,8 @@ app.post('/login', (req,res) => {
         var hash = sha256(password)
 
         if(users.database.some((user) => user.username === username && user.password === hash && user.college === college)) {
-            localStorage.setItem("currentUser", username);
-            localStorage.setItem("college", college);
+            currentUser = username;
+            currentCollege = college;
             const token = jwt.sign({
                 id: users.database.filter((user) => user.username === username)[0].id
             }, JWT_SECRET);
@@ -92,7 +94,7 @@ app.post('/login', (req,res) => {
 })
 
 app.get('/my-space', auth, (req, res) => {
-    const filePath = path.join(__dirname, 'databse/users.json');
+    const filePath = path.join(__dirname, 'users.json');
     
     fs.readFile(filePath, 'utf-8', (err, data) => {
         if(err) {
@@ -100,13 +102,13 @@ app.get('/my-space', auth, (req, res) => {
         }
 
         const users = JSON.parse(data);
-        const collegePosts = users.database.filter((user) => (user.college === college)).map(({ username, posts }) => ({ username, posts }));
+        const collegePosts = users.database.filter((user) => (user.college === currentCollege)).map(({ username, posts }) => ({ username, posts }));
         return res.status(200).json(collegePosts);
     })
 })
 
 app.post('/my-space', auth, (req, res) => {
-    const filePath = path.join(__dirname, 'database/users.json');
+    const filePath = path.join(__dirname, 'users.json');
     const post = req.body.post;
 
     if(!post) {
@@ -119,7 +121,6 @@ app.post('/my-space', auth, (req, res) => {
         }
 
         const users = JSON.parse(data);
-        const currentUser = localStorage.getItem("currentUser");
         let currentUserData = users.database.filter((user) => user.username === currentUser)[0]; 
         
         const newPost = {
@@ -145,7 +146,7 @@ app.post('/my-space', auth, (req, res) => {
 })
 
 app.put('/my-space', auth, (req, res) => {
-    const filePath = path.join(__dirname, 'database/users.json');
+    const filePath = path.join(__dirname, 'users.json');
     const username = req.body.username;
     const postId = req.body.id;
 
@@ -155,7 +156,6 @@ app.put('/my-space', auth, (req, res) => {
         }
 
         const users = JSON.parse(data);
-        const currentUser = localStorage.getItem("currentUser");
         const postUserData = users.database.filter((user) => (user.username === username))[0];
 
         postUserData.map((post) => 
@@ -177,8 +177,7 @@ app.put('/my-space', auth, (req, res) => {
 })
 
 app.get('/profile', auth, (req, res) => {
-    const filePath = path.join(__dirname, 'database/users.json');
-    const currentUser = localStorage.getItem("currentUser");
+    const filePath = path.join(__dirname, 'users.json');
 
     fs.readFile(filePath, 'utf-8', (err, data) => {
         if(err) {

@@ -7,7 +7,7 @@ const Signup = () => {
 
     return (
         <div className="box">
-            <h1>Login</h1>
+            <h1>Signup</h1>
             <div className="form">
                 <input 
                     type="text" 
@@ -23,17 +23,18 @@ const Signup = () => {
                 />
                 <select
                     onChange={(e) => {setCollege(e.target.value)}}
+                    defaultValue={"college"}
                 >
-                    <option value="college" disabled selected>Select college</option>
-                    <option value="college1">NITR</option>
-                    <option value="college2">IITB</option>
-                    <option value="college3">NITK</option>
+                    <option value="college" disabled>Select college</option>
+                    <option value="NITR">NITR</option>
+                    <option value="IITB">IITB</option>
+                    <option value="NITK">NITK</option>
                 </select>
                 <button 
                     type="submit"
                     id="submit"
                     onClick={async () => {
-                        const response = await fetch('http://localhost:3000/login', {
+                        const response = await fetch('http://localhost:3000/signup', {
                             method: "POST",
                             headers: {
                                 'Content-Type': 'application/json'
@@ -46,12 +47,7 @@ const Signup = () => {
                         });
                         
                         const json = await response.json();
-                        if(response.ok) {
-                            console.log(json.client);
-                            localStorage.setItem("token", json.token);
-                        } else {
-                            console.log(json);
-                        }
+                        console.log(json);
                         
                     }}
                 >
