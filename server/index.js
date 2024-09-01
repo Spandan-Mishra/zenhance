@@ -150,7 +150,7 @@ app.put('/my-space', auth, (req, res) => {
     const username = req.body.username;
     const postId = req.body.id;
 
-    fs.readFile(filePath, 'utf-8', (req, res) => {
+    fs.readFile(filePath, 'utf-8', (err, data) => {
         if(err) {
             res.status(400).json({msg: "Error in reading file"});
         }
@@ -158,9 +158,11 @@ app.put('/my-space', auth, (req, res) => {
         const users = JSON.parse(data);
         const postUserData = users.database.filter((user) => (user.username === username))[0];
 
-        postUserData.map((post) => 
-            post.id === postId ? [...post, interactors.push(username)] : post
-        )
+        postUserData.posts.map((post) => {
+            if(post.id === postId && !post.interactors.includes(currentUser)) {
+                post.interactors.push(currentUser);
+            }
+        })
 
         users.database.map((user) =>
             user.username === username ? postUserData : user

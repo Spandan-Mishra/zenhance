@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import AddPost from "./AddPost";
 
 const MySpace = () => {
     const [postDatas, setPostDatas] = useState([]);
@@ -45,17 +46,21 @@ const MySpace = () => {
                     <h1>Welcome to your Space!</h1>
                     {postDatas.length !== 0  ? (
                         <div>
-                            {postDatas.map((post, index) => (
-                                <div key={index} className="box">
-                                    <h3>{post.title}</h3>
-                                    <p>{post.description}</p>
-                                </div>
+                            {console.log(postDatas)}
+                            {postDatas.map((user, userIndex) => (
+                                user.posts.map((post, postIndex) => (
+                                    <div key={`${userIndex}-${postIndex}`}>
+                                        <h2>{user.username}</h2>
+                                        <h3>{post.content}</h3>
+                                    </div>
+                                ))
                             ))}
                             
                         </div>
                     ) : (
                         <h2>Add Tasks!</h2>
-                    )}            
+                    )}   
+                    <AddPost onAddPost={fetchData} />
                 </>
         )}
         </div> 
