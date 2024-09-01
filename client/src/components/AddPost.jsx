@@ -38,7 +38,7 @@ const AddPost = ({ onAddPost }) => {
     }
 
     return (
-        <form className="box" onSubmit={handleSubmit}>
+        <form className="form_box" onSubmit={handleSubmit}>
             <h2 >Add Tasks here!</h2>
             <div className="form">
                 <input 
