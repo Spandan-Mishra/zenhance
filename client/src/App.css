@@ -6,6 +6,13 @@
     font-size: 3.5rem;
 }
 
+#logo {
+    width: 10rem;
+    position: absolute;
+    top: -3rem;
+    left: -53rem;
+}
+
 .below_heading{
     position: absolute;
     top: 25rem;
@@ -20,7 +27,7 @@
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     font-size: 1.5rem;
     top: 35rem;
-    background-color: yellow;
+    background-color: rgb(235, 233, 135);
     padding: 1rem;
     border-radius: 2rem;
 }

@@ -14,8 +14,12 @@ const Home = () => {
                 journew to conquer you to-do list.
             </div>
 
-            <div className="change_colour">
-                Get ready to work CREATIVE...
+            <div>
+                <button 
+                    className='change_colour'
+                    onClick={() => { window.location.href = '/signup' }}>
+                        Signup for free!
+                </button>
             </div>
             <div className="main_inside_container">
                 <img src={work} alt="image" />
