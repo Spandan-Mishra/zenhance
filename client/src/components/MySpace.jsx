@@ -49,7 +49,7 @@ const MySpace = () => {
                             {console.log(postDatas)}
                             {postDatas.map((user, userIndex) => (
                                 user.posts.map((post, postIndex) => (
-                                    <div key={`${userIndex}-${postIndex}`}>
+                                    <div key={`${userIndex}-${postIndex}`} className="task_div">
                                         <h2>{user.username}</h2>
                                         <h3>{post.content}</h3>
                                         {user.username !== localStorage.getItem("username") ? <button
